@@ -2,7 +2,7 @@ import React from 'react';
 
 const Cart = () => {
     return (
-        <>
+        <div className="conteiner container--cart">
             <div class="cart">
                 <div class="cart__top">
                     <h2 class="content__title">
@@ -344,7 +344,7 @@ const Cart = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
