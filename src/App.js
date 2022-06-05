@@ -3,10 +3,12 @@ import Categories from "./components/Categories";
 import Header from "./components/Header";
 import PizzaBlock from "./components/PizzaBlock";
 import Sort from "./components/Sort";
+import Skeleton from "./components/PizzaBlock/Skeleton";
 import './scss/app.scss';
 
 function App() {
   const [items,setItems] = useState([]);
+  const [isLoading, setIsLoading]= useState(true);
 
   useEffect(() => {
     fetch('https://629bc30acf163ceb8d1d9f29.mockapi.io/items')
