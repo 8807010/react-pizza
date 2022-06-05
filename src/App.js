@@ -8,7 +8,7 @@ import './scss/app.scss';
 
 function App() {
   const [items,setItems] = useState([]);
-  const [isLoading, setIsLoading]= useState(true);
+  // const [isLoading, setIsLoading]= useState(true);
 
   useEffect(() => {
     fetch('https://629bc30acf163ceb8d1d9f29.mockapi.io/items')
@@ -30,8 +30,8 @@ function App() {
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
             {
-              items.map((obj) =>
-                <PizzaBlock key={obj.id} {...obj}
+              items.map((obj) => 
+                <Skeleton key={obj.id} {...obj}
                   // title={obj.title}
                   // price={obj.price}
                   // imageUrl={obj.imageUrl} 
