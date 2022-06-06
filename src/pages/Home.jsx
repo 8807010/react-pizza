@@ -16,10 +16,13 @@ const Home = () => {
 
     useEffect(() => {
         setIsLoading(true);
+
+        const sortBy = sortType.sortProperty.replace('-', '');
+        const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
+        const category = categoryId > 0 ? `category=${categoryId}` : '';
+        
         fetch(
-            `https://629bc30acf163ceb8d1d9f29.mockapi.io/items?${
-            categoryId > 0 ? `category=${categoryId}` : ''
-        }&sortBy=${sortType.sortProperty}&order=desc`,
+            `https://629bc30acf163ceb8d1d9f29.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}`,
         )
             .then((res) => res.json())
             .then((arr) => {
