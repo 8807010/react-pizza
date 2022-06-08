@@ -4,6 +4,7 @@ import Categories from "../components/Categories";
 import PizzaBlock from "../components/PizzaBlock";
 import Sort from "../components/Sort";
 import Skeleton from "../components/PizzaBlock/Skeleton";
+import Pagination from "../components/Pagination";
 
 const Home = ({ searchValue }) => {
     const [items, setItems] = useState([]);
@@ -46,6 +47,7 @@ const Home = ({ searchValue }) => {
             <div className="content__items">
                 {isLoading ? skeletons : pizzas}
             </div>
+            <Pagination/>
         </div>
     );
 };
