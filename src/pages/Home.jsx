@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setCategoryId } from '../redux/slices/filterSlice';
@@ -22,24 +23,22 @@ const Home = () => {
         dispatch(setCategoryId(id));
     }
 
-        useEffect(() => {
-            setIsLoading(true);
+    useEffect(() => {
+        setIsLoading(true);
 
-            const sortBy = sort.sortProperty.replace('-', '');
-            const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
-            const category = categoryId > 0 ? `category=${categoryId}` : '';
-            const search = searchValue ? `&search=${searchValue}` : '';
+        const sortBy = sort.sortProperty.replace('-', '');
+        const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
+        const category = categoryId > 0 ? `category=${categoryId}` : '';
+        const search = searchValue ? `&search=${searchValue}` : '';
 
-            fetch(
-                `https://629bc30acf163ceb8d1d9f29.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
-            )
-                .then((res) => res.json())
-                .then((arr) => {
-                    setItems(arr);
-                    setIsLoading(false);
-                });
-            window.scrollTo(0, 0);
-        }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+        axios.get(`https://629bc30acf163ceb8d1d9f29.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
+            .then((res) => {
+                setItems(res.data);
+                setIsLoading(false);
+            });
+            
+        window.scrollTo(0, 0);
+    }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
     const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
     const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
