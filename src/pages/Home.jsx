@@ -12,7 +12,7 @@ import { SearchContext } from "../App";
 
 const Home = () => {
     const dispatch = useDispatch();
-    const { categoryId, sort, currentPage} = useSelector(state => state.filter);
+    const { categoryId, sort, currentPage} = useSelector((state) => state.filter);
 
     const { searchValue } = React.useContext(SearchContext);
     const [items, setItems] = useState([]);
