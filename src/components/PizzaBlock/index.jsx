@@ -20,7 +20,7 @@ const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }) => {
             price,
             imageUrl,
             type: typeNames[activeType],
-            size: activeSize,
+            size: sizes[activeSize],
         };
         dispatch(addItem(item));
     };
