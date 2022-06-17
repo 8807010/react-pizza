@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CartItem from '../components/CartItem';
 
@@ -51,7 +51,9 @@ const Cart = () => {
                     </div>
                 </div>
                 <div className="content__items">
-                    <CartItem/>
+                    {items.map((item) => (
+                        <CartItem key={item.id} {...item} />
+                    ))}
                 </div>
                 <div className="cart__bottom">
                     <div className="cart__bottom-details">
