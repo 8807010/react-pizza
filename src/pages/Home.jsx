@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import qs from 'qs';
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +10,7 @@ import Sort, { sortList } from "../components/Sort";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
 import { SearchContext } from "../App";
+import { fetchPizzas } from "../redux/slices/pizzaSlice";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -18,11 +18,10 @@ const Home = () => {
     const isSearch = React.useRef(false);
     const isMounted = React.useRef(false);
 
-    const { categoryId, sort, currentPage } = useSelector(state => state.filter);
+    const { items, status } = useSelector((state) => state.pizza);
+    const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
 
     const { searchValue } = React.useContext(SearchContext);
-    const [items, setItems] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
 
     const onChangeCategory = (id) => {
         dispatch(setCategoryId(id));
@@ -32,36 +31,21 @@ const Home = () => {
         dispatch(setCurrentPage(number));
     };
 
-    const fetchPizzas = async () => {
-        setIsLoading(true);
-
+    const getPizzas = async () => {
         const sortBy = sort.sortProperty.replace('-', '');
         const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
         const category = categoryId > 0 ? `category=${categoryId}` : '';
         const search = searchValue ? `&search=${searchValue}` : '';
 
-        // await axios
-        //     .get(`https://629bc30acf163ceb8d1d9f29.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
-        //     .then((res) => {
-        //         setItems(res.data);
-        //         setIsLoading(false);
-        //     })
-        //     .catch((err) => {
-        //         setIsLoading(false);
-        //     });
-
-        try {
-            const res = await axios.get(
-                `https://629bc30acf163ceb8d1d9f29.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`);
-
-            setItems(res.data);
-        } catch (error) {
-            setIsLoading(false);
-            console.log('ERROR', error);
-            alert('Ошибка при получении пицц');
-        } finally {
-            setIsLoading(false);
-        }
+        dispatch(
+            fetchPizzas({
+                sortBy,
+                order,
+                category,
+                search,
+                currentPage,
+            }),
+        );
 
         window.scrollTo(0, 0);
     };
@@ -101,13 +85,8 @@ const Home = () => {
 
     // Если был первый рендер, то запрашиваем пиццы
     useEffect(() => {
-
-        if (!isSearch.current) {
-            fetchPizzas();
-        };
-
-        isSearch.current = false;
-    }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+        getPizzas();
+    }, [categoryId, sort.sortProperty, currentPage]);
 
     const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
     const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
@@ -119,9 +98,15 @@ const Home = () => {
                 <Sort />
             </div>
             <h2 className="content__title">Все пиццы</h2>
-            <div className="content__items">
-                {isLoading ? skeletons : pizzas}
-            </div>
+            {
+                status === 'error' ? (
+                    <div className="content__error-info">
+                    <h2>Произошла ошибка 😕</h2>
+                    <p>К сожаления, не удалось получить пиццы. Попробуйте повторить попытку позже.</p>
+                </div>) : (
+                    <div className="content__items">{status === 'loading' ? skeletons : pizzas}</div>
+                    )}
+
             <Pagination currentPage={currentPage} onChangePage={onChangePage} />
         </div>
     );
