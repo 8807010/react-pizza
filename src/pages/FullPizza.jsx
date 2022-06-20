@@ -1,11 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 
 const FullPizza = () => {
     const [pizza, setPizza] = React.useState();
     const { id } = useParams();
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         async function fetchPizza() {
@@ -13,7 +14,8 @@ const FullPizza = () => {
                 const { data } = await axios.get('https://62b049e5b0a980a2ef4f7867.mockapi.io/items/' + id);
                 setPizza(data);
             } catch (error) {
-                alert ('Ошибка при получении пиццы!');
+                alert('Ошибка при получении пиццы!');
+                navigate('/');
             }
         }
 
@@ -26,7 +28,7 @@ const FullPizza = () => {
 
     return (
         <div className='container'>
-            <img src={pizza.imageUrl} />
+            <img src={pizza.imageUrl} alt={pizza.title} />
             <h2>{pizza.title}</h2>
             <h4>{pizza.price}</h4>
         </div>
