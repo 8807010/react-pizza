@@ -37,7 +37,7 @@ const FullPizza: React.FC = () => {
       <h2>{pizza.title}</h2>
       <h4>{pizza.price} ₽</h4>
 
-      <Link to="/">
+      <Link to='/'>
         <button className='button button--outline button--add'>
           <span>Назад</span>
         </button>
