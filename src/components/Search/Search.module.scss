@@ -1,6 +1,19 @@
 .root {
   position: relative;
   left: -120px;
+
+  @media (max-width: 1500px) {
+    margin-left: 60px;
+  }
+
+  @media (max-width: 1380px) {
+    left: 0;
+    margin: 0px;
+  }
+
+  @media (max-width:1000px) {
+
+  }
 }
 
 .input {
@@ -10,6 +23,18 @@
   border-radius: 10px;
   font-size: 16px;
   transition: all 0.15s ease-in-out;
+
+  @media (max-width: 1200px) {
+    width: 350px;
+  }
+
+  @media (max-width: 1135px) {
+    width: 250px;
+  }
+
+  @media (max-width:1000px) {
+    margin: 20px 0;
+  }
 
   &:focus {
     border: 1px solid rgba(0, 0, 0, 0.2);
@@ -23,6 +48,10 @@
   position: absolute;
   left: 14px;
   top: 12px;
+
+  @media (max-width:1000px) {
+    top: 32px;
+  }
 }
 
 .clearIcon {
